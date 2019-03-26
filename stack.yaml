@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  NodeJs810Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: nodejs810/index.handler
+      Runtime: nodejs8.10
+      Timeout: 10
+      MemorySize: 128
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /nodejs8.10
+            Method: get
+            
+  NodeJs610Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: nodejs610/index.handler
+      Runtime: nodejs6.10
+      Timeout: 10
+      MemorySize: 128
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /nodejs6.10
+            Method: get
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  NodeJs810Api:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+  NodeJs810Function:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt NodeJs810Function.Arn
+  NodeJs810FunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt NodeJs810FunctionRole.Arn
