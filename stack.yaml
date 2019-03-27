@@ -10,7 +10,7 @@ Resources:
       Timeout: 10
       MemorySize: 128
       Events:
-        HelloWorld:
+        BenchmarkTestApi:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             Path: /nodejs8.10
@@ -23,7 +23,7 @@ Resources:
       Timeout: 10
       MemorySize: 128
       Events:
-        HelloWorld:
+        BenchmarkTestApi:
           Type: Api
           Properties:
             Path: /nodejs6.10
@@ -38,7 +38,7 @@ Resources:
       Handler: app.lambda_handler
       Runtime: python2.7
       Events:
-        HelloWorld:
+        BenchmarkTestApi:
           Type: Api
           Properties:
             Path: /python2.7
@@ -53,7 +53,7 @@ Resources:
       Handler: app.lambda_handler
       Runtime: python3.6
       Events:
-        HelloWorld:
+        BenchmarkTestApi:
           Type: Api
           Properties:
             Path: /python3.6
@@ -68,12 +68,29 @@ Resources:
       Handler: app.lambda_handler
       Runtime: python3.7
       Events:
-        HelloWorld:
+        BenchmarkTestApi:
           Type: Api
           Properties:
             Path: /python3.7
             Method: get
 
+  DotNetCore21Function:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: dotnetcore21/artifacts/HelloWorld.zip
+      Handler: HelloWorld::HelloWorld.Function::FunctionHandler
+      Runtime: dotnetcore2.1
+      Timeout: 20
+      MemorySize: 256
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        BenchmarkTestApi:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /dotnetcore2.1
+            Method: get
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
