@@ -40,7 +40,8 @@ exports.handler = async (event, context, callback) => { // async only works in N
       'body': JSON.stringify({
         runtime: 'NOdeJs-8.10',
         benchmark: `Benchmark took ${diff[0] * NS_PER_SEC + diff[1]} nanoseconds (${(diff[0] * NS_PER_SEC + diff[1] / 1000000)} milliseconds)`,
-        execution: `Lambda Execution Time: ${10000 - context.getRemainingTimeInMillis()} milliseconds`
+        execution: `Lambda Execution Time: ${10000 - context.getRemainingTimeInMillis()} milliseconds`,
+        result: (diff[0] * NS_PER_SEC + diff[1] / 1000000)
       })
     }
   } catch (err) {

@@ -15,7 +15,6 @@ Resources:
           Properties:
             Path: /nodejs8.10
             Method: get
-            
   NodeJs610Function:
     Type: AWS::Serverless::Function
     Properties:
@@ -28,6 +27,51 @@ Resources:
           Type: Api
           Properties:
             Path: /nodejs6.10
+            Method: get
+
+  Python27Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: python27/
+      Timeout: 20
+      MemorySize: 256
+      Handler: app.lambda_handler
+      Runtime: python2.7
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /python2.7
+            Method: get
+
+  Python36Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: python36/
+      Timeout: 20
+      MemorySize: 256
+      Handler: app.lambda_handler
+      Runtime: python3.6
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /python3.6
+            Method: get
+
+  Python36Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: python37/
+      Timeout: 20
+      MemorySize: 256
+      Handler: app.lambda_handler
+      Runtime: python3.7
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /python3.7
             Method: get
 
 Outputs:

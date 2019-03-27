@@ -38,9 +38,10 @@ exports.handler = (event, context, callback) => {
     response = {
       'statusCode': 200,
       'body': JSON.stringify({
-        runtime: 'NOdeJs-6.10',
+        runtime: 'NodeJs-6.10',
         benchmark: `Benchmark took ${diff[0] * NS_PER_SEC + diff[1]} nanoseconds (${(diff[0] * NS_PER_SEC + diff[1] / 1000000)} milliseconds)`,
-        execution: `Lambda Execution Time: ${10000 - context.getRemainingTimeInMillis()} milliseconds`
+        execution: `Lambda Execution Time: ${10000 - context.getRemainingTimeInMillis()} milliseconds`,
+        result: (diff[0] * NS_PER_SEC + diff[1] / 1000000)
       })
     }
   } catch (err) {
