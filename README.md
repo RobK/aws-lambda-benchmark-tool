@@ -30,6 +30,7 @@ project
 │   README.md
 │   make.bat          - Windows build script
 |   Makefile          - Linux build script
+|   stack.yaml        - The AWS SAM stack for deployment to AWS
 │
 └─── results
 │   │   index.js      - The lambda that collects the results of the tests
