@@ -1,12 +1,21 @@
 @echo off
 
+
+REM Required Config - Change this to a bucket that you have put & get access to.
+set BUCKET_NAME=robert-kehoe-benchmark-tool
+
+
 REM Optionally change the Cloudformation stack name
 set STACK_NAME=benchmark-test
-set BUCKET_NAME=kehoro-tmp-scanner
+
 IF "%1"=="deploy" (
     GOTO deploy
-) ELSE IF "%1"=="zip-python27" (
-    GOTO zip
+) ELSE IF "%1"=="results" (
+    GOTO results
+) ELSE IF "%1"=="python27" (
+    GOTO python27
+) ELSE IF "%1"=="python36" (
+    GOTO python36
 ) ELSE IF "%1"=="zip" (
     GOTO zip
 ) ELSE IF "%1"=="" (
@@ -21,29 +30,35 @@ call aws cloudformation package --template-file stack.yaml ^
     --output-template-file serverless-output.yaml ^
     --s3-bucket %BUCKET_NAME%
 echo Deploying package...
-REM --parameter-overrides "NotificationEmail=%NOTIFICATION_EMAIL%" "CronSchedule=%CRONSCHEDULE%"
 call aws cloudformation deploy --template-file serverless-output.yaml --stack-name %STACK_NAME% --capabilities CAPABILITY_IAM
 GOTO Finished
 
-:zip
-REM Assumes you have 7-Zip installed, this is for development only (Pro tip: nodemon --exec "make zip")
-REM 7z a lambda.zip nodejs610
-REM call aws lambda update-function-code --function-name benchmark-test-NodeJs610Function-17RHREE3GP564 --zip-file fileb://./dotnetcore21/artifacts/BenchmarkTest.zip
-call aws lambda update-function-code --function-name benchmark-test-DotNetCore21Function-H863B4F288HV --zip-file fileb://./dotnetcore21/artifacts/HelloWorld.zip
-GOTO Finished
-
-:zip-python27
-REM Assumes you have 7-Zip installed, this is for development only (Pro tip: nodemon --exec "make zip")
-REM 7z a lambda.zip nodejs610
-REM call aws lambda update-function-code --function-name benchmark-test-NodeJs610Function-17RHREE3GP564 --zip-file fileb://./lambda.zip
+REM Helper function
+:python27
+echo "Zipping Python...."
 cd python27
 7z a lambda.zip *
 cd ..
-call aws lambda update-function-code --function-name benchmark-test-Python27Function-17RO64T5YALV9 --zip-file fileb://./python27/lambda.zip
+call aws lambda update-function-code --function-name benchmark-test-Python27Function-1AJO3MNRCCSBC --zip-file fileb://./python27/lambda.zip
 del python27\lambda.zip
 GOTO Finished
 
+:python36
+echo "Zipping Python...."
+cd python36
+7z a lambda.zip *
+cd ..
+call aws lambda update-function-code --function-name benchmark-test-Python36Function-M7YWCD9L8AE3 --zip-file fileb://./python36/lambda.zip
+del python36\lambda.zip
 GOTO Finished
+
+:results
+echo "Zipping Results App...."
+7z a lambda.zip results
+call aws lambda update-function-code --function-name benchmark-test-ResultsFunction-163GRIL4ZTH1F --zip-file fileb://./lambda.zip
+del lambda.zip
+GOTO Finished
+
 
 :Invalid
 echo Invalid command (try: make deploy)
