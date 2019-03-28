@@ -1,49 +1,76 @@
-# Lambda Page Scanner
+# Lambda Algorithm Tester
 
-A "page scanner" application that will periodically query a web page, and compare to previous version 
-and send a notification if there has been any additions.
+An AWS SAM stack (implementation plus CloudFormation Deployment) that tests various Lambda runtimes in solving the Codeility "Missing Integer" problem.
 
-Example Use Cases:
- - Monitor an RSS feed for new items
- - Monitor a blog for new posts
- - Monitor a subreddit for new topics
+Tested AWS Lambda Runtimes:
+  - NodeJS 6.10
+  - NodeJS 8.10
+  - Python 2.7
+  - Python 3.6
+  - Python 3.7
+  - .Net Core 1.0
+  - .Net Core 2.0
+  - .Net Core 2.1
 
-The application is powered using AWS Lambda, DynamoDB, S3 and CloudFormation. 
 
-Note: application does use S3 to upload the change sets/packages. 
-Clear out bucket regularly to avoid charges (although S3 is probably the cheapest AWS service).
+ # How to run / see results
 
+ To see the live (aggregated) benchmark results, you can navigate to: https://a111u0z5x2.execute-api.eu-west-1.amazonaws.com/Prod/results
+
+ You can see a particular runtime result at: https://a111u0z5x2.execute-api.eu-west-1.amazonaws.com/Prod/${RUN_TIME}
+
+ e.g. https://a111u0z5x2.execute-api.eu-west-1.amazonaws.com/Prod/python3.7
+
+
+# Project Outline
+
+Each supported runtime has it own folder with the solution and test data.
+```
+project
+│   README.md
+│   make.bat          - Windows build script
+|   Makefile          - Linux build script
+│
+└─── results
+│   │   index.js      - The lambda that collects the results of the tests
+|   │   node_modules  - For easy of use modules are included, but run npm ci
+│
+└─── python37
+│   │   app.py        - Python handler that computes the solution
+...
+│
+└─── dotnetcore21
+│   └─── src/HelloWorld/Solution.cs     - The C# solution file
+│   └─── src/HelloWorld/Program.cs      - The C# handler that computes the solution
+...
+```
+
+The test data was reversed engineered from Codeility comments.
 
 # How to Install
-
-As long as you have the prerequitests installed it is trival to get started. You can either clone 
-this project from GitHub or download the archive and extract somewhere on your local disk
 
 ### Prerequitests
 
 - Have an Amzon AWS account
 - AWS CLI tool installed
 - Have configured the AWS CLI tool (i.e. already run `aws configure`)
-- Have an Amazon S3 bucket already created
+- Have an Amazon S3 bucket already created (aws s3 mb s3://some-unique-bucket-name)
 
-The installation of the AWS CLI tool is covered in great depth on the 
-[Installing the AWS Command Line Interface](http://docs.aws.amazon.com/cli/latest/userguide/installing.html) and the 
+The installation of the AWS CLI tool is covered in great depth on the
+[Installing the AWS Command Line Interface](http://docs.aws.amazon.com/cli/latest/userguide/installing.html) and the
 [Configuring the AWS Command Line Interface](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
 
-## Configuration
+## AWS Deployment
 
-You will need to modify the lambda function slightly to match your needs, in your code editor edit the file
-`lambda/index.js`. Change the variables at the top as needed.
-
-In addition there is some OS specific stuff that will need to be done.
+There is some OS specific stuff that will need to be done.
 
 ### Windows Users
 
-Edit the `make.bat` file and change the vairables at the top as required
+Edit the `make.bat` file and change the bucket name vairable at the top as required
 
 ### Linux / Mac Users
 
-Edit the `Makefile` file and change the vairables at the top as required
+Edit the `Makefile` file and change the  bucket name vairable at the top as required
 
 You are now ready to begine the installation.
 
@@ -51,14 +78,14 @@ You are now ready to begine the installation.
 
 ### Windows & Linux/Mac
 
-Installation instrutions are identical for all OS's, 
+Installation instrutions are identical for all OS's,
 
 - Git clone this repo or download the archive and extract
 - Configure settings as described above
 - Open a command line window / bash terminal
 - Goto the directory where the project files are located
 - run the command: `make deploy` (this is the same for both Windows and Linux users)
-
-NOTE: The first time you deploy the application Amazon will send you a confirmation email 
-asking you to confirm your subscription, you __must__ click the link to confirm, otherwise 
-AWS will not send you and more emails.
+- For the precompiled runtime (.Net Core), you will need to build and publish any changes before running `make deploy`:
+   - `cd dotnetcore21`
+   - `powershell`
+   - `.\build --target=Publish`
