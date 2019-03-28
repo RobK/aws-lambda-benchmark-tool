@@ -60,7 +60,7 @@ Resources:
             Path: /python3.6
             Method: get
 
-  Python36Function:
+  Python37Function:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: python37/
@@ -120,16 +120,24 @@ Resources:
             Path: /dotnetcore1.0
             Method: get
 
+  ResultsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: results/index.handler
+      Runtime: nodejs8.10
+      Timeout: 10
+      MemorySize: 128
+      Events:
+        BenchmarkTestApi:
+          Type: Api
+          Properties:
+            Path: /results
+            Method: get
+
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  NodeJs810Api:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  NodeJs810Function:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt NodeJs810Function.Arn
-  NodeJs810FunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt NodeJs810FunctionRole.Arn
+  ApiEndPoint:
+    Description: "API Gateway endpoint URL for Prod stage (append runtime to see results)"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
