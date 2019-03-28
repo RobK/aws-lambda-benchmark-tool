@@ -47,7 +47,7 @@ namespace HelloWorld {
             ApiResponse test = new ApiResponse();
             test.benchmark = "Benchmark took " + (sw.ElapsedMilliseconds).ToString() + " millseconds";
             test.result = sw.ElapsedMilliseconds;
-            test.execution = "`Lambda Execution Time: " + (20000 - context.RemainingTime.TotalMilliseconds).ToString();
+            test.execution = "Lambda Execution Time: " + (20000 - context.RemainingTime.TotalMilliseconds).ToString();
             return new APIGatewayProxyResponse {
                 Body = JsonConvert.SerializeObject (test),
                     StatusCode = 200,

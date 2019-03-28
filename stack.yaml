@@ -1,5 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
+Description: Benchmark tool for Lambda
 
 Resources:
   NodeJs810Function:
@@ -82,15 +83,43 @@ Resources:
       Runtime: dotnetcore2.1
       Timeout: 20
       MemorySize: 256
-      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
-        Variables:
-          PARAM1: VALUE
       Events:
         BenchmarkTestApi:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api
           Properties:
             Path: /dotnetcore2.1
             Method: get
+
+  DotNetCore20Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dotnetcore20/artifacts/HelloWorld.zip
+      Handler: HelloWorld::HelloWorld.Function::FunctionHandler
+      Runtime: dotnetcore2.0
+      Timeout: 20
+      MemorySize: 256
+      Events:
+        BenchmarkTestApi:
+          Type: Api
+          Properties:
+            Path: /dotnetcore2.0
+            Method: get
+
+  DotNetCore10Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dotnetcore10/artifacts/HelloWorld.zip
+      Handler: HelloWorld::HelloWorld.Function::FunctionHandler
+      Runtime: dotnetcore1.0
+      Timeout: 20
+      MemorySize: 256
+      Events:
+        BenchmarkTestApi:
+          Type: Api
+          Properties:
+            Path: /dotnetcore1.0
+            Method: get
+
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
