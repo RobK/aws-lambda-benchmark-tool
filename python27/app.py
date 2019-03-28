@@ -35,6 +35,7 @@ for data_set in data():
     return {
         "statusCode": 200,
         "body": json.dumps({
+            "result": timeit.timeit(stmt=s, number=1) * 1000,
             "runtime": "Python-2.7",
             "benchmark": timeit.timeit(stmt=s, number=1) * 1000, # time returns time in seconds as a float - https://docs.python.org/2/library/timeit.html
             "execution": "Lambda Execution Time: %f in seconds" % ((20000 - context.get_remaining_time_in_millis ()) / 1000),
