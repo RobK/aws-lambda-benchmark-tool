@@ -3,7 +3,7 @@
  * MIT License, see included project license
  */
 
-const data = require("./test-data");
+const data = require("./testdata");
 const solution = require("./solution");
 
 /**
@@ -39,7 +39,7 @@ exports.handler = async (event, context, callback) => { // async only works in N
       'statusCode': 200,
       'body': JSON.stringify({
         runtime: 'NOdeJs-8.10',
-        benchmark: `Benchmark took ${diff[0] * NS_PER_SEC + diff[1]} nanoseconds (${(diff[0] * NS_PER_SEC + diff[1] / 1000000)} milliseconds)`,
+        benchmark: `Benchmark took ${diff[0] * NS_PER_SEC + diff[1]} nanoseconds`,
         execution: `Lambda Execution Time: ${10000 - context.getRemainingTimeInMillis()} milliseconds`,
         result: (diff[0] * NS_PER_SEC + diff[1] / 1000000)
       })
